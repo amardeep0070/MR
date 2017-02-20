@@ -45,6 +45,7 @@ public class GraphMakerMapper extends Mapper<LongWritable, Text, Text, Text>{
      * 		  "pageName~0A0"	"[adjacency list]"
      */
 	// Override the map method of the Mapper in the GraphBuilder
+	@Override
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 		
 		String absFileName = value.toString();
@@ -91,7 +92,7 @@ public class GraphMakerMapper extends Mapper<LongWritable, Text, Text, Text>{
 //								System.out.println();
 //							}
 //								str.append(s.toString()).append("~");
-						context.write(new Text(pageName.trim()), new Text(linkPageNames.toString()));
+						context.write(new Text(pageName.trim()), new Text("s@!"+linkPageNames.toString()));
 					}
 				}
 		} catch (Exception e) {
