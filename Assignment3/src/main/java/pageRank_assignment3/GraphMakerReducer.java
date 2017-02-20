@@ -13,7 +13,7 @@ public class GraphMakerReducer extends Reducer<Text,Text,Text,Text> {
 			Context context
 			) throws IOException, InterruptedException {
 		for (Text val : values) {
-			System.out.println("value is     ---     " + val);
+			context.write(key, val);
 		}
 	}
 }

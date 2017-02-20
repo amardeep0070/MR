@@ -83,15 +83,15 @@ public class GraphMakerMapper extends Mapper<LongWritable, Text, Text, Text>{
 					
 					// If no error occurred then get the Adjacency List.
 					if(!errorOccured) {
-						context.getCounter(PageValue.page.PAGE_COUNT).increment(1);
-						System.out.println(pageName+"  --   "+ linkPageNames);
-						System.out.println("hello");
+//						context.getCounter(PageValue.page.PAGE_COUNT).increment(1);
+//						System.out.println(pageName+"  --   "+ linkPageNames);
+//						System.out.println("hello");
 //						StringBuilder str = new StringBuilder();
 //							for (Text s : linkPageNames){
 //								System.out.println();
 //							}
 //								str.append(s.toString()).append("~");
-//						context.write(new Text(pageName.trim()), new Text("1" + str.toString()));
+						context.write(new Text(pageName.trim()), new Text(linkPageNames.toString()));
 					}
 				}
 		} catch (Exception e) {
