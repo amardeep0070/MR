@@ -15,9 +15,6 @@ public class TotalCountRedcuer extends Reducer<Text,Text,Text,Text>  {
 	public void reduce(Text key, Iterable<Text> values, 
 			Context context
 			) throws IOException, InterruptedException {
-//		context.getCounter(pageCount.COUNT).increment(1);
 		context.getCounter(pageCount.COUNT).increment(1);
-//		for(Text val:values)
-//		context.write(key, val);
 	}
 }

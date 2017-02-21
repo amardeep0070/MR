@@ -11,8 +11,8 @@ public class TotalCountMapper extends Mapper<LongWritable, Text,Text,NullWritabl
 	@Override
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 		String[] temp = value.toString().split("s@!");
-		if(!temp[1].equals("[]")){
-			String listContent=temp[1].substring(1, temp[1].length()-1);
+		if(!temp[2].equals("[]")){
+			String listContent=temp[2].substring(1, temp[2].length()-1);
 			//List<String> list = new ArrayList<String>(Arrays.asList(listContent.split(" , ")));
 			String[] list = listContent.split(",");
 			for(String s: list){

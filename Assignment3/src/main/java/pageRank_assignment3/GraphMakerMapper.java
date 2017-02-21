@@ -92,7 +92,7 @@ public class GraphMakerMapper extends Mapper<LongWritable, Text, Text, Text>{
 //								System.out.println();
 //							}
 //								str.append(s.toString()).append("~");
-						context.write(new Text(pageName.trim()), new Text("s@!"+linkPageNames.toString()));
+						context.write(new Text(pageName.trim()), new Text("s@!"+"PRV"+"s@!"+linkPageNames.toString()));
 					}
 				}
 		} catch (Exception e) {
