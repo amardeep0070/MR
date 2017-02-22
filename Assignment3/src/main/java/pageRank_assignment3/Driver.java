@@ -15,7 +15,12 @@ public class Driver {
 	public static enum pageCount{
 		COUNT
 	};
+	public static enum delta{
+		DELTA
+	}
 	public static void main(String[] args) throws Exception {
+		Long numberOfPages=0l;
+		Long dangling=0l;
 		PrintWriter writer = new PrintWriter("the-file-name.txt", "UTF-8");
 		String outPutCount="outputCount";
 		Configuration conf = new Configuration();
@@ -38,10 +43,11 @@ public class Driver {
 			FileInputFormat.addInputPath(job, new Path(otherArgs[i]));
 		}
 		FileOutputFormat.setOutputPath(job,
-				new Path(otherArgs[otherArgs.length - 1]));
+				new Path(otherArgs[otherArgs.length - 1]+"0"));
 		//System.exit(job.waitForCompletion(true) ? 0 : 1);
 		boolean success = job.waitForCompletion(true);
 		if (success) {
+			int iteration=0;
 			Configuration totalCountConfig = new Configuration();
 			Job countTotal=Job.getInstance(totalCountConfig,"counttotal");
 			countTotal.setJarByClass(Driver.class);
@@ -49,15 +55,69 @@ public class Driver {
 			countTotal.setReducerClass(TotalCountRedcuer.class);
 			countTotal.setMapOutputValueClass(NullWritable.class);
 			countTotal.setMapOutputKeyClass(Text.class);
-			FileInputFormat.addInputPath(countTotal, new Path(otherArgs[otherArgs.length-1]));
+			FileInputFormat.addInputPath(countTotal, new Path(otherArgs[otherArgs.length-1]+"0"));
 			FileOutputFormat.setOutputPath(countTotal, new Path(outPutCount));
 			if(countTotal.waitForCompletion(true)){
-				writer.println(countTotal.getCounters().findCounter(pageCount.COUNT).getValue());
-				writer.close();
-				System.exit(0);
+				numberOfPages=countTotal.getCounters().findCounter(pageCount.COUNT).getValue();
+				//writer.close();
+				//System.exit(0);
 			}
-			//System.exit(countTotal.waitForCompletion(true) ? 0 : 1);
+			 
+//			while(iteration<10){
+//				String inputPath=otherArgs[otherArgs.length-1]+iteration;
+//				iteration++;
+//				String outputPath=otherArgs[otherArgs.length-1]+iteration;
+//				Configuration pageRankConfig = new Configuration();
+//				Job pageRank = Job.getInstance(pageRankConfig,"pageRank");
+//				pageRank.getConfiguration().setLong("delta", dangling);
+//				pageRank.setJarByClass(Driver.class);
+//				pageRank.setMapperClass(PageRankMapper.class);
+//				pageRank.setReducerClass(PageRankReducer.class);
+//				pageRank.setMapOutputKeyClass(Text.class);
+//				FileInputFormat.addInputPath(pageRank, new Path(inputPath));
+//				FileOutputFormat.setOutputPath(pageRank, new Path(outputPath));
+//				pageRank.getConfiguration().setLong("numberOfPages", numberOfPages);
+//				if(pageRank.waitForCompletion(true)){
+//					dangling=pageRank.getCounters().findCounter(delta.DELTA).getValue();
+//				}
+//			}
 		}
+//		if (true) {
+//			int iteration=0;
+////			Configuration totalCountConfig = new Configuration();
+////			Job countTotal=Job.getInstance(totalCountConfig,"counttotal");
+////			countTotal.setJarByClass(Driver.class);
+////			countTotal.setMapperClass(TotalCountMapper.class);
+////			countTotal.setReducerClass(TotalCountRedcuer.class);
+////			countTotal.setMapOutputValueClass(NullWritable.class);
+////			countTotal.setMapOutputKeyClass(Text.class);
+////			FileInputFormat.addInputPath(countTotal, new Path("preprocessing"+"0"));
+////			FileOutputFormat.setOutputPath(countTotal, new Path(outPutCount));
+////			if(countTotal.waitForCompletion(true)){
+////				numberOfPages=countTotal.getCounters().findCounter(pageCount.COUNT).getValue();
+////				//writer.close();
+////				//System.exit(0);
+////			}
+//			 
+//			while(iteration<4){
+//				String inputPath="preprocessing"+iteration;
+//				iteration++;
+//				String outputPath="preprocessing"+iteration;
+//				Configuration pageRankConfig = new Configuration();
+//				Job pageRank = Job.getInstance(pageRankConfig,"pageRank");
+//				pageRank.getConfiguration().setLong("delta", dangling);
+//				pageRank.setJarByClass(Driver.class);
+//				pageRank.setMapperClass(PageRankMapper.class);
+//				pageRank.setReducerClass(PageRankReducer.class);
+//				pageRank.setMapOutputKeyClass(Text.class);
+//				FileInputFormat.addInputPath(pageRank, new Path(inputPath));
+//				FileOutputFormat.setOutputPath(pageRank, new Path(outputPath));
+//				pageRank.getConfiguration().setLong("numberOfPages", 4);
+//				if(pageRank.waitForCompletion(true)){
+//					dangling=pageRank.getCounters().findCounter(delta.DELTA).getValue();
+//				}
+//			}
+//		}
 		
 	}
 }

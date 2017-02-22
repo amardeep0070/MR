@@ -47,7 +47,7 @@ public class GraphMakerMapper extends Mapper<LongWritable, Text, Text, Text>{
 	// Override the map method of the Mapper in the GraphBuilder
 	@Override
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-		
+	
 		String absFileName = value.toString();
 		boolean errorOccured = false;
 
