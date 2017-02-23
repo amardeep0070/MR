@@ -22,6 +22,8 @@ public class PageRankMapper extends Mapper<LongWritable, Text, Text, Text> {
 		double pageRank=0d;
 		String temp[]= value.toString().split("s@!");
 		temp[0]=stripSpaces(temp[0].trim());
+		temp[1]=stripSpaces(temp[1].trim());
+		temp[2]=stripSpaces(temp[2].trim());
 		context.write(new Text(temp[0]), new Text("list="+temp[2]));
 		if(!temp[1].equals("PRV")){
 			pageRank= (Double.parseDouble(temp[1])+0.85*delta/(numberOfPages*100000000));
@@ -34,12 +36,15 @@ public class PageRankMapper extends Mapper<LongWritable, Text, Text, Text> {
 			String[] list = preList.split(",");
 			for(String l : list){
 				l=stripSpaces(l.trim());
-				context.write(new Text(l),new Text(""+pageRank/temp[2].length()));
+				context.write(new Text(l),new Text(""+pageRank/list.length));
 			}
 			pageRank=0d;
 		}
+		else{
+			context.write(new Text(temp[0]),new Text(""+pageRank));
+		}
 		
-			//context.write(new Text(temp[0].trim()),new Text(""+pageRank));
+			
 	}
 	public String stripSpaces(String s){
 		while(s.startsWith(" ")){
